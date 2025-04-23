@@ -5,29 +5,32 @@ public class Item {
     private boolean sliced;
     private int x;
     private int y;
-    private double velocity;
     private boolean isBomb;
     private Image image;
     private GameView window;
+    private int dY;
 
-    public Item(int x, int y, double velocity, boolean isBomb, String fileName, GameView window){
+    public Item(int x,int y, int difficulty, boolean isBomb, String fileName, GameView window){
         this.x = x;
         this.y = y;
-        this.velocity = velocity;
         this.isBomb = isBomb;
         this.sliced = false;
         String file = fileName;
         this.image = new ImageIcon(file).getImage();
         this.window = window;
+
+        this.y = 900;
+
+        this.dY = difficulty;
+
     }
 
-    public boolean bomb(){
+    public boolean isBomb(){
         return this.isBomb;
     }
 
     public boolean isClicked(int mouseX, int mouseY) {
-         int val = 30;
-        if(mouseX > this.x + val && mouseX < this.x + image.getWidth(window) - val  && mouseY > this.y + val && mouseY < this.y + image.getHeight(window) - val){
+        if(mouseX > this.x && mouseX < this.x + image.getWidth(window) && mouseY > this.y && mouseY < this.y + image.getHeight(window)){
             return true;
         }
         return false;
@@ -47,9 +50,6 @@ public class Item {
         return y;
     }
 
-    public double getVelocity() {
-        return velocity;
-    }
 
     public Image getImage() {
         return image;
@@ -68,16 +68,16 @@ public class Item {
         this.y = y;
     }
 
-    public void setVelocity(double velocity) {
-        this.velocity = velocity;
-    }
-
     public void setImage(Image image) {
         this.image = image;
     }
 
+    public void move(){
+        this.y -= dY;
+    }
+
     public void draw(Graphics g){
-        g.drawImage(this.image, this.x,this.y,100,100,window);
+        g.drawImage(this.image, this.x,this.y,60,60,window);
     }
 
 
