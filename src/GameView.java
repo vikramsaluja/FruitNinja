@@ -19,9 +19,10 @@ public class GameView extends JFrame {
 
     public void startScreen(Graphics g){
         g.setColor(Color.red);
-        g.setFont(new Font("Arial", Font.PLAIN, 24));
-        g.drawString("FRUIT NINJA GAME", 500, 300);
-        g.drawString("CLICK TO VIEW INSTRUCTIONS!", 500,500);
+        g.setFont(new Font("Arial", Font.BOLD, 30));
+        g.drawString("FRUIT NINJA GAME", 500, 450);
+        g.setFont(new Font("Arial", Font.BOLD, 18));
+        g.drawString("CLICK TO VIEW INSTRUCTIONS", 507,550);
     }
 
     public void printInstructions(Graphics g){
@@ -31,15 +32,24 @@ public class GameView extends JFrame {
     }
 
     public void paintLives(Graphics g){
-        g.setFont(new Font("Arial", Font.PLAIN, 16));
+        int lives = game.getPlayer().getNumLives();
+        g.setFont(new Font("Arial", Font.BOLD, 20));
         g.setColor(Color.red);
-        g.drawString("Lives: " + game.getPlayer().getNumLives(), 1000,75);
+        g.drawString("Lives: ", 1030, 65);
+        int margin = 1070;
+
+        g.setFont(new Font("Arial", Font.BOLD, 30));
+        g.setColor(Color.red);
+        for(int i = 0; i < lives; i++) {
+            margin += 30;
+            g.drawString("X", margin, 70);
+        }
     }
 
     public void paintScore(Graphics g){
-        g.setFont(new Font("Arial", Font.PLAIN, 16));
+        g.setFont(new Font("Arial", Font.BOLD, 20));
         g.setColor(Color.red);
-        g.drawString("Score: " + game.getPlayer().getScore(), 25, 75);
+        g.drawString("Score: " + game.getPlayer().getScore(), 25, 70);
     }
 
     public void paintItems(Graphics g){
@@ -62,7 +72,10 @@ public class GameView extends JFrame {
 
     public void paintGameOver(Graphics g){
         g.setColor(Color.red);
-        g.drawString("GAME OVER", 500,500);
+        g.setFont(new Font("Arial", Font.BOLD, 75));
+        g.drawString("GAME OVER", 400,500);
+        paintScore(g);
+        paintLives(g);
     }
 
     public void paint(Graphics g){

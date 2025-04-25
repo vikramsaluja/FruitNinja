@@ -8,7 +8,6 @@ import java.util.ArrayList;
 public class Game implements MouseListener, MouseMotionListener, ActionListener {
     private Player player;
     private int state;
-    private boolean gameOver;
     private ArrayList<Item> items;
     private GameView window;
     private int difficulty;
@@ -19,7 +18,6 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
         this.state = 0;
         this.items = new ArrayList<Item>();
         this.window = new GameView(this);
-        gameOver = false;
         this.difficulty = 0;
         this.round = 0;
         this.velocity = this.difficulty + 10;
@@ -39,7 +37,7 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
 
     public void actionPerformed(ActionEvent e) {
         // If game is still running
-        if(this.state == 2 && !gameOver){
+        if(this.state == 2 && !gameOver()){
             for(int i = 0; i < items.size(); i++){
                 Item temp = items.get(i);
                 // Move every item
@@ -61,8 +59,7 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
             this.difficulty++;
             newWave();
         }
-        if(player.getNumLives() == 0){
-            gameOver = true;
+        if(gameOver()){
             this.state = 3;
         }
         window.repaint();
@@ -92,7 +89,7 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
         return false;
     }
 
-    public boolean GameOver(){
+    public boolean gameOver(){
         if(player.getNumLives() == 0){
             this.state = 3;
             return true;
@@ -136,9 +133,9 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
             }
         }
         else {
-            int numBombs = ((int) Math.random() * 4 + 1);
+            int numBombs = ((int) (Math.random() * 4) + 1);
 
-            for (int i = 0; i < this.difficulty - numBombs; i++) {
+            for (int i = 0; i < this.difficulty; i++) {
                 items.add(new Item((int) ((Math.random() * 1100) + 100), (int) ((Math.random() * 300) + 1000), this.velocity, false, "Resources/watermelon.png", this.window));
             }
 
@@ -150,7 +147,7 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
     }
 
     public void update() {
-        while (!gameOver) {
+        while (!gameOver()) {
             if (!items.isEmpty()) {
                 this.difficulty += 3;
                 this.velocity += 10;

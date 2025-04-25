@@ -9,6 +9,8 @@ public class Item {
     private Image image;
     private GameView window;
     private int dY;
+    private int imageWidth;
+    private int imageHeight;
 
     public Item(int x,int y, int difficulty, boolean isBomb, String fileName, GameView window){
         this.x = x;
@@ -23,6 +25,9 @@ public class Item {
 
         this.dY = difficulty;
 
+        this.imageWidth = 60;
+        this.imageHeight = 60;
+
     }
 
     public boolean isBomb(){
@@ -30,7 +35,8 @@ public class Item {
     }
 
     public boolean isClicked(int mouseX, int mouseY) {
-        if(mouseX > this.x && mouseX < this.x + image.getWidth(window) && mouseY > this.y && mouseY < this.y + image.getHeight(window)){
+        // Check if mouse is within the boundaries of item
+        if(mouseX >=  this.x && mouseX <= this.x + this.imageWidth && mouseY >= this.y && mouseY <= this.y + this.imageHeight){
             return true;
         }
         return false;
@@ -77,7 +83,7 @@ public class Item {
     }
 
     public void draw(Graphics g){
-        g.drawImage(this.image, this.x,this.y,60,60,window);
+        g.drawImage(this.image, this.x,this.y,this.imageWidth,this.imageHeight,window);
     }
 
 
