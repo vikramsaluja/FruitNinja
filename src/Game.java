@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.event.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 // Vikram Saluja Fruit Ninja Game
@@ -30,7 +29,7 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
         this.window.addMouseListener(this);
         this.window.addMouseMotionListener(this);
 
-        Timer clock = new Timer(110, this);
+        Timer clock = new Timer(60, this);
         clock.start();
 
     }
@@ -53,11 +52,11 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
                     i--;
                 }
             }
-        }
-        // Run new waves when there are no more items
-        if(items.isEmpty() || (!containsBomb() && this.round > 3)){
-            this.difficulty++;
-            newWave();
+            // Run new waves when there are no more items
+            if(items.isEmpty() || (onlyBomb() && this.round >= 3)){
+                this.difficulty++;
+                newWave();
+            }
         }
         if(gameOver()){
             this.state = 3;
@@ -78,10 +77,6 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
         return this.items;
     }
 
-    public int getDifficulty(){
-        return this.difficulty;
-    }
-
     public boolean offScreen(Item item){
         if (item.getY() <= 0) {
             return true;
@@ -97,13 +92,19 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
         return false;
     }
 
-    public boolean containsBomb(){
+    public boolean onlyBomb(){
+        int counter = 0;
         for(int i = 0; i < items.size(); i++){
             if(items.get(i).isBomb()){
-                return true;
+                counter++;
             }
         }
-        return false;
+        if(counter == items.size()){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     public void checkCollisions(int x, int y){
@@ -124,33 +125,53 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
         }
     }
 
+    public void clearItems(){
+        while(!items.isEmpty()){
+            items.remove(0);
+        }
+    }
+
     public void newWave(){
+        // Everytime there is a new wave, increase the round
         this.round++;
 
+        //  There are no bombs for the first 3 rounds
         if(this.round < 3){
             for(int i = 0; i < this.difficulty; i++){
+                // Randomize x coordinate and velocity
                 items.add(new Item((int) ((Math.random() * 1100) + 100),(int) ((Math.random() * 300) + 1000), this.velocity, false,"Resources/watermelon.png", this.window));
             }
         }
         else {
+            // After round 10, 66% chance that past bombs get cleared which makes the game harder
+            if(this.round > 10){
+                if(((int) (Math.random() * 3) + 1) != 1){
+                    // Clear all items, reset screen;
+                    clearItems();
+                }
+            }
+            // Randomize number of bombs between 1 and 4
             int numBombs = ((int) (Math.random() * 4) + 1);
 
+            // Create new fruits with each round
             for (int i = 0; i < this.difficulty; i++) {
-                items.add(new Item((int) ((Math.random() * 1100) + 100), (int) ((Math.random() * 300) + 1000), this.velocity, false, "Resources/watermelon.png", this.window));
+                // Randomize x coordinate and velocity
+                items.add(new Item((int) ((Math.random() * 1100) + 100), (int) ((Math.random() * 300) + 1000),((int) (Math.random() * 15) + this.difficulty), false, "Resources/watermelon.png", this.window));
             }
-
+            // Create new bombs for wave
             for (int i = 0; i < numBombs; i++) {
-                items.add((new Bomb((int) ((Math.random() * 1100) + 100), (int) ((Math.random() * 300) + 1000), this.velocity, true, "Resources/bomb.png", this.window)));
+                // Randomize x coordinate and velocity
+                items.add((new Bomb((int) ((Math.random() * 1100) + 100), (int) ((Math.random() * 300) + 1000), ((int) (Math.random() * 10) + this.difficulty), true, "Resources/bomb.png", this.window)));
             }
         }
 
     }
 
     public void update() {
+        // Keep game running while game is not over
         while (!gameOver()) {
             if (!items.isEmpty()) {
-                this.difficulty += 3;
-                this.velocity += 10;
+                this.difficulty += 2;
                 newWave();
                 window.repaint();
             }

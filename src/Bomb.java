@@ -1,5 +1,3 @@
-import java.awt.*;
-
 public class Bomb extends Item{
     private boolean isSliced;
     private boolean bomb;
