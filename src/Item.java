@@ -36,7 +36,7 @@ public class Item {
 
     public boolean isClicked(int mouseX, int mouseY) {
         // Check if mouse is within the boundaries of item
-        if(mouseX >=  this.x && mouseX <= this.x + this.imageWidth && mouseY >= this.y && mouseY <= this.y + this.imageHeight){
+        if(mouseX >=  this.x && mouseX - 25 <= this.x + this.imageWidth && mouseY >= this.y && mouseY - 25 <= this.y + this.imageHeight){
             return true;
         }
         return false;

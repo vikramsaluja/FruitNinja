@@ -3,11 +3,13 @@ import java.awt.*;
 import java.awt.image.BufferStrategy;
 
 public class GameView extends JFrame {
+    private Image mImage;
     final int WINDOW_WIDTH = 1300;
     final int WINDOW_HEIGHT = 1000;
     private Game game;
 
     public GameView(Game game){
+        this.mImage = new ImageIcon("Resources/sword.png").getImage();
         this.game = game;
 
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -16,6 +18,11 @@ public class GameView extends JFrame {
         this.setVisible(true);
         this.createBufferStrategy(2);
     }
+
+    public void paintMouse(Graphics g){
+        g.drawImage(this.mImage,game.getX()-50, game.getY()-50,100,100,this);
+    }
+
 
     public void startScreen(Graphics g){
         g.setColor(Color.red);
@@ -29,6 +36,7 @@ public class GameView extends JFrame {
         g.setFont(new Font("Arial", Font.PLAIN, 24));
         g.setColor(Color.red);
         g.drawString("Instructions!", 400, 400);
+        g.drawString("Click To Play!",1100, 100);
     }
 
     public void paintLives(Graphics g){
@@ -64,6 +72,7 @@ public class GameView extends JFrame {
     }
 
     public void paintPlay(Graphics g){
+        paintMouse(g);
         paintItems(g);
         paintLives(g);
         paintScore(g);
@@ -96,15 +105,12 @@ public class GameView extends JFrame {
 
 
     public void myPaint(Graphics g){
-        g.setColor(Color.black);
+        g.setColor(Color.DARK_GRAY);
         g.fillRect(0,0,WINDOW_WIDTH,WINDOW_HEIGHT);
         if(game.getState() == 0){
             startScreen(g);
         }
         else if(game.getState() == 1){
-            printInstructions(g);
-        }
-        else if(game.getState() == 2){
             paintPlay(g);
         }
         else{
