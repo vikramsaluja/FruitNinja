@@ -14,6 +14,7 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
     private int round;
     private int x;
     private int y;
+    private int timer;
 
     public Game() {
         this.state = 0;
@@ -22,6 +23,7 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
         this.difficulty = 0;
         this.round = 0;
         this.velocity = this.difficulty + 10;
+        this.timer = 0;
 
         this.player = new Player();
 
@@ -38,15 +40,15 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
 
     public void actionPerformed(ActionEvent e) {
         // If game is still running
-        if(this.state == 1 && !gameOver()){
-            for(int i = 0; i < items.size(); i++){
+        if(this.state == 1 && !gameOver()) {
+            for (int i = 0; i < items.size(); i++) {
                 Item temp = items.get(i);
                 // Move every item
                 temp.move();
                 // If item is off the screen remove it from list
-                if(offScreen(temp)){
+                if (offScreen(temp)) {
                     // If the item is not a bomb then a live is a lost
-                    if(!temp.isBomb()) {
+                    if (!temp.isBomb()) {
                         player.liveLost();
                     }
                     // Remove off-screen items from list
@@ -55,9 +57,17 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
                 }
             }
             // Run new waves when there are no more items
-            if(items.isEmpty() || (onlyBomb() && this.round >= 3)){
-                this.difficulty++;
-                newWave();
+            if (items.isEmpty() || (onlyBomb() && this.round >= 3)) {
+                // Increment timer
+                timer++;
+                // Wait before a creating new wave
+                if(timer == 20) {
+                    this.difficulty++;
+                    newWave();
+                    // Reset timer
+                    timer = 0;
+                }
+
             }
         }
         if(gameOver()){
@@ -166,7 +176,7 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
             int numBombs = ((int) (Math.random() * 4) + 1);
 
             // Create new fruits with each round
-            for (int i = 0; i < this.difficulty; i++) {
+            for (int i = 0; i < ((int)(Math.random() *6)+(this.difficulty-6)); i++) {
                 // Randomize x coordinate and velocity
                 items.add(new Item((int) ((Math.random() * 1100) + 100), (int) ((Math.random() * 300) + 1000),((int) (Math.random() * 10) + this.difficulty), false, "Resources/watermelon.png", this.window));
             }
