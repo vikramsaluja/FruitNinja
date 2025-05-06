@@ -19,13 +19,13 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
     public Game() {
         this.state = 0;
         this.items = new ArrayList<Item>();
-        this.window = new GameView(this);
         this.difficulty = 0;
         this.round = 0;
         this.velocity = this.difficulty + 10;
         this.timer = 0;
-
         this.player = new Player();
+
+        this.window = new GameView(this);
 
 
         window.repaint();
@@ -36,6 +36,20 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
         Timer clock = new Timer(60, this);
         clock.start();
 
+    }
+
+    public void resetGame(){
+        this.state = 0;
+        this.items = new ArrayList<Item>();
+        this.difficulty = 0;
+        this.round = 0;
+        this.velocity = this.difficulty + 10;
+        this.timer = 0;
+
+        this.player = new Player();
+
+
+        window.repaint();
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -216,7 +230,7 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
             this.state++;
         }
         if(this.state == 3){
-            this.state = 0;
+            resetGame();
         }
     }
 
