@@ -4,7 +4,9 @@ public class Player {
     private int numLives;
 
     public Player() {
+        // Set the number of lives that the player has
         this.numLives = 3;
+        // Set the score to 0
         this.score = 0;
     }
 
@@ -28,10 +30,12 @@ public class Player {
     }
 
     public void addScore(int points){
+        // Increase the players score
         score += points;
     }
 
     public void liveLost(){
+        // Remove a life from the player
         numLives -= 1;
     }
 }
