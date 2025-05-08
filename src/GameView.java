@@ -14,7 +14,7 @@ public class GameView extends JFrame {
         this.game = game;
 
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setTitle("Fruit Ninja");
+        this.setTitle("Watermelon Slice");
         this.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         this.setVisible(true);
         this.createBufferStrategy(2);
@@ -30,7 +30,7 @@ public class GameView extends JFrame {
         // Set the color to red and print out the start screen
         g.setColor(Color.red);
         g.setFont(new Font("SansSerif", Font.BOLD, 30));
-        g.drawString("FRUIT NINJA GAME", 600, 450);
+        g.drawString("WATERMELON SLICE GAME", 540, 450);
         g.setFont(new Font("SansSerif", Font.BOLD, 20));
         g.drawString("CLICK TO PLAY!", 657,550);
     }

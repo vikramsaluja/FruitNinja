@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-// Vikram Saluja Fruit Ninja Game
+// Vikram Saluja Watermelon Slice Game
 
 public class Game implements MouseListener, MouseMotionListener, ActionListener {
     private Player player;
@@ -24,7 +24,9 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
         this.difficulty = 0;
         this.round = 0;
         this.velocity = this.difficulty + 10;
+        // Set the timer to 0
         this.timer = 0;
+        // Create Player
         this.player = new Player();
 
         // Create window
@@ -37,13 +39,14 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
         this.window.addMouseMotionListener(this);
 
         Timer clock = new Timer(60, this);
+        // Start the timer
         clock.start();
 
     }
 
     // Reset game method which allows player to play again
     public void resetGame(){
-        // Similarly to the constructor, reset all the instace variables
+        // Similarly to the constructor, reset all the instance variables
         this.state = 0;
         this.items = new ArrayList<Item>();
         this.difficulty = 0;
@@ -51,6 +54,7 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
         this.velocity = this.difficulty + 10;
         this.timer = 0;
 
+        // Create new player
         this.player = new Player();
 
         window.repaint();
